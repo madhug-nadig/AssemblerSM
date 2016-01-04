@@ -1,11 +1,6 @@
 //IMPORTANT!!!
 //This program is long, complicated and uses
 //a lot of structures. As such, it highly inefficient.
-//All functions related to JMP have been
-//commented as I could not properly implement it.
-//Also, the output is not an even 16 bits
-//for every line as I cannot find out how
-//to fill in extra 0's.
 
 #include<stdio.h>
 #include<string.h>
@@ -17,7 +12,7 @@ struct lin
     char op[100];
     char reg[100];
     char val[100];
-    char extra[100]; //extra variable for JMP statents
+    char extra[100]; //extra variable for JMP statements
 };
 
 struct tableEntry
@@ -58,19 +53,6 @@ void Register(FILE * f, char * s)
     else if (strcmp(s, "*R7,") == 0)
     {fprintf(f, "11101");}
 }
-
-/*int findOccurence(char * s, struct lin a[mxl])
-{
-    int i;
-    for(i = 0; i < mxl; i++)
-    {
-        char * temp = a[i].op - 1;
-        if (strcmp(temp, s) == 0)
-        {
-            return i;
-        }
-    }
-}*/
 
 void hexToBin(FILE * f, char * s)
 {
@@ -138,159 +120,6 @@ void constVal(FILE * f, char * s, struct lin y[mxl])
         fprintf(f, "\n");
     }
 }
-/*
-void moveIt(struct lin a, FILE * op, struct tableEntry t)
-{
-    if (strcmp(a[li].op, "MOV") == 0)
-    {
-        fprintf(op, "001101");
-        Register(op, a[li].reg);
-        if (a[li].val[0] == '&')
-        {
-            fprintf(op, "00010");
-            fprintf(op, "\n");
-            char * temp = a[li].val+1;
-            //printf("%s\n", temp);
-            referTable(op, temp, t);
-        }
-        else if (a[li].val[0] == '#')
-        {
-            fprintf(op, "00010");
-            fprintf(op, "\n");
-            char * temp = a[li].val+1;
-            constVal(op, temp, a);
-        }
-        else
-        {
-            hexToBin(op, a[li].val);
-            fprintf(op, "\n");
-        }
-    }
-}
-*/
-/*
-void afterJump(struct lin a[mxl], int li, FILE * op, struct tableEntry t[mxl])
-{
-    /*if (strcmp(a[li].val, "HLT") == 0)
-        {
-            fprintf(op, "001010");
-            fprintf(op, "0000000000");
-            return;
-        }
-        
-        if (strcmp(a[li].reg, "DS") == 0)
-        {
-            int no = atoi(a[li].val);
-            int r = findValue(a[li].op, op, t);
-            if(!r)
-            {
-                int s;
-                while(s <= no)
-                {
-                    fprintf(op, "0000000000000000");
-                    fprintf(op, "\n");
-                }
-            }
-        }
-    
-        if (strcmp(a[li].val, "DC") == 0)
-        {
-            fprintf(op, "00000000");
-            hexToBin(op, a[li].extra);
-            fprintf(op, "\n");
-        }
-        
-        if (strcmp(a[li].reg, "MOV") == 0)
-        {
-            //moveIt(a, op);
-            fprintf(op, "001101");
-            Register(op, a[li].val);
-            if (a[li].extra[0] == '&')
-            {
-                fprintf(op, "00010");
-                fprintf(op, "\n");
-                char * temp = a[li].extra+1;
-                //printf("%s\n", temp);
-                referTable(op, temp, t);
-            }
-            else if (a[li].extra[0] == '#')
-            {
-                fprintf(op, "00010");
-                fprintf(op, "\n");
-                char * temp = a[li].extra+1;
-                constVal(op, temp, a);
-            }
-            else
-            {
-                hexToBin(op, a[li].extra);
-                fprintf(op, "\n");
-            }
-        }
-        
-        if (strcmp(a[li].reg, "ADD") == 0)
-        {
-            fprintf(op, "010000");
-            Register(op, a[li].val);
-            Register(op, a[li].extra);
-            fprintf(op, "\n");
-        }
-        
-        if (strcmp(a[li].reg, "SUB") == 0)
-        {
-            fprintf(op, "010001");
-            Register(op, a[li].val);
-            Register(op, a[li].extra);
-            fprintf(op, "\n");
-        }
-        
-        if (strcmp(a[li].reg, "NEG") == 0)
-        {
-            fprintf(op, "000000");
-            Register(op, a[li].val);
-            Register(op, a[li].extra);
-            fprintf(op, "\n");
-        }
-        
-        if (strcmp(a[li].reg, "AND") == 0)
-        {
-            fprintf(op, "000001");
-            Register(op, a[li].val);
-            Register(op, a[li].extra);
-            fprintf(op, "\n");
-        }
-        
-        if (strcmp(a[li].reg, "OR") == 0)
-        {
-            fprintf(op, "000011");
-            Register(op, a[li].val);
-            Register(op, a[li].extra);
-            fprintf(op, "\n");
-        }
-        
-        if (strcmp(a[li].reg, "LSR") == 0)
-        {
-            fprintf(op, "000100");
-            Register(op, a[li].val);
-            Register(op, a[li].extra);
-            fprintf(op, "\n");
-        }
-        
-        if (strcmp(a[li].reg, "LSL") == 0)
-        {
-            fprintf(op, "000101");
-            Register(op, a[li].val);
-            Register(op, a[li].extra);
-            fprintf(op, "\n");
-        }
-        
-        if (strcmp(a[li].reg, "XOR") == 0)
-        {
-            fprintf(op, "000010");
-            Register(op, a[li].val);
-            Register(op, a[li].extra);
-            fprintf(op, "\n");
-        }
-}*/
 
 int main()
 {
@@ -338,35 +167,11 @@ int main()
             //printf("%s\n", t[q].name);
             q++;
         }
-        
-        /*if (strcmp(a[p].op, "JMP") == 0)
-        {
-            strcpy(t[q].name, a[p].reg);
-            int z = findOccurence(a[p].reg, a);
-            t[q].address = z;
-        }
-        q++;*/
     }
     FILE * op = fopen("Binarycode.txt", "w");
     int li;
     for(li = 0; li <= mxl; li++) 
     {
-        /*if (strcmp(a[li].op, "JMP") == 0)
-        {
-            fprintf(op, "0011110000000000\n");
-            int g;
-            for(g = 0; g < mxl; g++)
-            {
-                if (strcmp(a[li].reg, t[g].name) == 0)
-                {
-                    li = t[g].address;
-        //^^This causes an infinite loop!
-                    printf("%d", t[g].address);
-                }
-            }
-            
-        }*/
-        
         //I intended to have more lines in the JMP
         //implementation, but they did not work.
         
